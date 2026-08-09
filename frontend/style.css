@@ -1,0 +1,552 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #172033;
+}
+
+.navbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 7%;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.nav-text {
+    color: #667085;
+    font-size: 14px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1150px;
+    margin: auto;
+    padding: 50px 0;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: 44px;
+    line-height: 1.2;
+
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: #2563eb;
+}
+
+.hero p {
+    max-width: 720px;
+    margin: auto;
+
+    color: #667085;
+
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.prediction-card {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.06);
+}
+
+.form-header {
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.form-header p {
+    color: #667085;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+input,
+select {
+    width: 100%;
+    height: 48px;
+
+    border: 1px solid #d0d5dd;
+
+    border-radius: 9px;
+
+    padding: 0 14px;
+
+    font-size: 15px;
+
+    background: white;
+
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px #2563eb15;
+}
+
+#predictBtn {
+    width: 100%;
+    height: 52px;
+
+    margin-top: 25px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+#predictBtn:hover {
+    background: #1d4ed8;
+}
+
+#predictBtn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.loading {
+    text-align: center;
+
+    margin-top: 20px;
+
+    color: #667085;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+
+    border: 4px solid #e5e7eb;
+
+    border-top-color: #2563eb;
+
+    border-radius: 50%;
+
+    margin:
+        auto auto 10px;
+
+    animation:
+        spin 1s linear infinite;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+.price-card {
+    margin-top: 40px;
+
+    background: #172033;
+
+    color: white;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.result-label {
+    color: #cbd5e1;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+}
+
+.price-card h2 {
+    font-size: 40px;
+
+    margin-bottom: 8px;
+}
+
+#selectedLocation {
+    color: #cbd5e1;
+}
+
+.price-icon {
+    font-size: 55px;
+}
+
+.section-title {
+    margin:
+        40px 0 20px;
+}
+
+.section-title h2 {
+    margin-bottom: 6px;
+}
+
+.section-title p {
+    color: #667085;
+}
+
+.price-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 15px;
+}
+
+.price-year {
+    background: white;
+
+    border-radius: 14px;
+
+    padding: 22px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.price-year .year {
+    color: #667085;
+
+    font-size: 14px;
+}
+
+.price-year .value {
+    font-size: 20px;
+
+    font-weight: 800;
+
+    margin-top: 8px;
+}
+
+.facility-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.facility-card {
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.facility-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+.map-link {
+    display: inline-block;
+    margin-top: 5px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.map-link:hover {
+    text-decoration: underline;
+}
+
+.facility-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.hospital {
+    background: #fee2e2;
+}
+
+.school {
+    background: #dbeafe;
+}
+
+.mall {
+    background: #fef3c7;
+}
+
+.police {
+    background: #ede9fe;
+}
+
+.facility-header h3 {
+    margin-bottom: 3px;
+}
+
+.facility-header span {
+    color: #667085;
+
+    font-size: 13px;
+}
+
+.place {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 13px 0;
+
+    border-top:
+        1px solid #eef0f3;
+}
+
+.place-name {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.distance {
+    color: #2563eb;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.coordinates-card {
+    background: white;
+
+    margin-top: 20px;
+
+    padding: 22px;
+
+    border-radius: 15px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.coordinates-card h3 {
+    margin-bottom: 10px;
+}
+
+#displayName {
+    color: #667085;
+
+    margin-bottom: 15px;
+
+    line-height: 1.5;
+}
+
+.coordinates {
+    display: flex;
+
+    gap: 20px;
+
+    color: #475467;
+
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+
+    padding: 30px;
+
+    color: #667085;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.error {
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+
+@media (max-width: 800px) {
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .price-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .facility-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-text {
+        display: none;
+    }
+
+    .container {
+        width: 94%;
+
+        padding-top: 30px;
+    }
+
+    .prediction-card {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .price-card {
+        padding: 22px;
+    }
+
+    .price-card h2 {
+        font-size: 30px;
+    }
+
+    .price-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coordinates {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+}

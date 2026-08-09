@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        HomeValue - Housing Price Predictor
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        🏠 HomeValue
+    </div>
+
+    <div class="nav-text">
+        AI Housing Price Prediction
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+
+<section class="hero">
+
+    <div class="badge">
+        SMART PROPERTY ANALYSIS
+    </div>
+
+    <h1>
+
+        Find Your Property's
+
+        <span>
+            Estimated Value
+        </span>
+
+    </h1>
+
+    <p>
+
+        Get an AI-based property price
+        prediction with nearby hospitals,
+        schools, malls and police stations.
+
+    </p>
+
+</section>
+
+
+
+<section class="prediction-card">
+
+
+    <div class="form-header">
+
+        <h2>
+            Property Details
+        </h2>
+
+        <p>
+            Enter your property information
+        </p>
+
+    </div>
+
+
+
+    <div class="form-grid">
+
+
+        <div class="form-group full">
+
+            <label>
+                Property Location
+            </label>
+
+            <select id="location">
+
+                <option value="">
+                    Loading locations...
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Total Area (sq.ft)
+            </label>
+
+            <input
+                id="total_sqft"
+                type="number"
+                placeholder="Example: 1200"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                BHK
+            </label>
+
+            <select id="bhk">
+
+                <option value="">
+                    Select BHK
+                </option>
+
+                <option value="1">
+                    1 BHK
+                </option>
+
+                <option value="2">
+                    2 BHK
+                </option>
+
+                <option value="3">
+                    3 BHK
+                </option>
+
+                <option value="4">
+                    4 BHK
+                </option>
+
+                <option value="5">
+                    5 BHK
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Bathrooms
+            </label>
+
+            <select id="bath">
+
+                <option value="">
+                    Select Bathrooms
+                </option>
+
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label>
+                Balcony
+            </label>
+
+            <select id="balcony">
+
+                <option value="">
+                    Select Balcony
+                </option>
+
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+
+    <button
+        id="predictBtn"
+        onclick="predictHouse()"
+    >
+
+        Predict Property Price
+
+    </button>
+
+
+
+    <div
+        id="loading"
+        class="loading hidden"
+    >
+
+        <div class="spinner"></div>
+
+        <p>
+            Analysing property and nearby
+            facilities...
+        </p>
+
+    </div>
+
+
+
+    <div
+        id="error"
+        class="error hidden"
+    ></div>
+
+
+</section>
+
+
+
+<section
+    id="result"
+    class="hidden"
+>
+
+
+    <div class="price-card">
+
+        <div>
+
+            <p class="result-label">
+                Estimated Property Value — 2026
+            </p>
+
+            <h2 id="mainPrice">
+                ₹0
+            </h2>
+
+            <p id="selectedLocation"></p>
+
+        </div>
+
+
+        <div class="price-icon">
+            🏠
+        </div>
+
+    </div>
+
+
+
+    <div class="section-title">
+
+        <h2>
+            Price Projection
+        </h2>
+
+        <p>
+            Estimated property value
+            from 2022 to 2026
+        </p>
+
+    </div>
+
+
+    <div
+        id="priceCards"
+        class="price-grid"
+    ></div>
+
+
+
+    <div class="section-title">
+
+        <h2>
+            Nearby Facilities
+        </h2>
+
+        <p>
+            Nearest facilities within 10 KM
+        </p>
+
+    </div>
+
+
+
+    <div class="facility-grid">
+
+
+        <div class="facility-card">
+
+            <div class="facility-header">
+
+                <div class="facility-icon hospital">
+                    🏥
+                </div>
+
+                <div>
+
+                    <h3>
+                        Hospitals
+                    </h3>
+
+                    <span>
+                        Nearest 5
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div id="hospitals"></div>
+
+        </div>
+
+
+
+        <div class="facility-card">
+
+            <div class="facility-header">
+
+                <div class="facility-icon school">
+                    🏫
+                </div>
+
+                <div>
+
+                    <h3>
+                        Schools
+                    </h3>
+
+                    <span>
+                        Nearest 5
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div id="schools"></div>
+
+        </div>
+
+
+
+        <div class="facility-card">
+
+            <div class="facility-header">
+
+                <div class="facility-icon mall">
+                    🛍️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Malls
+                    </h3>
+
+                    <span>
+                        Nearest 5
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div id="malls"></div>
+
+        </div>
+
+
+
+        <div class="facility-card">
+
+            <div class="facility-header">
+
+                <div class="facility-icon police">
+                    👮
+                </div>
+
+                <div>
+
+                    <h3>
+                        Police Stations
+                    </h3>
+
+                    <span>
+                        Nearest 5
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div id="police"></div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="coordinates-card">
+
+        <h3>
+            📍 Location Information
+        </h3>
+
+        <p id="displayName"></p>
+
+        <div class="coordinates">
+
+            <span id="latitude"></span>
+
+            <span id="longitude"></span>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        Housing Price Prediction System
+    </p>
+
+    <p>
+        Machine Learning + Location Intelligence
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
