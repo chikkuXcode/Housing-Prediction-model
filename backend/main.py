@@ -12,11 +12,21 @@ app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500","http://localhost:5500"],
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Load ML model, feature columns, and location list
+model = joblib.load("model/house_price_model.pkl")
+model_column = joblib.load("model/model_columns.pkl")
+locations = joblib.load("model/locations.pkl")
 
 def predict_bengaluru_2022_2026(price_2017):
     return {y: round(price_2017 * (1.085)**(y-2017), 2) for y in [2022,2023,2024,2025,2026]}
@@ -29,10 +39,6 @@ def hello():
 def get_locations():
     return locations
 
-model = joblib.load("house_price_model.pkl")
-model_column = joblib.load("model_columns.pkl")
-locations = joblib.load("locations.pkl")
-
 
 class HouseData(BaseModel):
     location: Annotated[str,Field(...)]
@@ -43,16 +49,15 @@ class HouseData(BaseModel):
 
 
 def get_coordinates(location):
+    clean_loc = location.strip()
+    
+    # Handle generic 'other' category by querying Bengaluru center
+    if clean_loc.lower() == 'other':
+        search_query = "Bengaluru, Karnataka"
+    else:
+        search_query = f"{clean_loc}, Bengaluru, Karnataka"
 
     url = "https://nominatim.openstreetmap.org/search"
-
-    params = {
-        "q": location,
-        "format": "json",
-        "limit": 1,
-        "countrycodes": "in"
-    }
-
     headers = {
         "User-Agent": "HousingPricePredictionProject/1.0"
     }
@@ -60,14 +65,49 @@ def get_coordinates(location):
     try:
         response = requests.get(
             url,
-            params=params,
+            params={
+                "q": search_query,
+                "format": "json",
+                "limit": 1,
+                "countrycodes": "in"
+            },
             headers=headers,
             timeout=15
         )
-
         response.raise_for_status()
-
         result = response.json()
+
+        # Fallback if specific phrase returned empty
+        if not result and clean_loc.lower() != 'other':
+            fallback_res = requests.get(
+                url,
+                params={
+                    "q": f"{clean_loc}, Bangalore",
+                    "format": "json",
+                    "limit": 1,
+                    "countrycodes": "in"
+                },
+                headers=headers,
+                timeout=15
+            )
+            if fallback_res.ok:
+                result = fallback_res.json()
+
+        # Final fallback to Bengaluru center if still not found
+        if not result:
+            city_res = requests.get(
+                url,
+                params={
+                    "q": "Bengaluru, Karnataka",
+                    "format": "json",
+                    "limit": 1,
+                    "countrycodes": "in"
+                },
+                headers=headers,
+                timeout=15
+            )
+            if city_res.ok:
+                result = city_res.json()
 
     except requests.RequestException:
         raise HTTPException(

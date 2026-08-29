@@ -1,6 +1,17 @@
-mvenv/
+# Python / backend
 venv/
+mvenv/
 .env
 __pycache__/
 *.pyc
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor / OS
 .vscode/
+.idea/
+.DS_Store
