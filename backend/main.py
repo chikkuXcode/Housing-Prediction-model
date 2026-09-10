@@ -110,16 +110,10 @@ def get_coordinates(location):
                 result = city_res.json()
 
     except requests.RequestException:
-        raise HTTPException(
-            status_code=503,
-            detail="Location service unavailable"
-        )
+        return None
 
     if not result:
-        raise HTTPException(
-            status_code=404,
-            detail="Coordinates not found for selected location"
-        )
+        return None
 
     return {
         "latitude": float(result[0]["lat"]),
@@ -191,11 +185,7 @@ def get_nearby_places(latitude, longitude):
         data = response.json()
 
     except requests.RequestException:
-
-        raise HTTPException(
-            status_code=503,
-            detail="Nearby places service unavailable"
-        )
+        return {"hospitals": [], "schools": [], "malls": [], "police_stations": []}
 
     nearby = {
         "hospitals": [],
@@ -305,21 +295,20 @@ def prediction(data:HouseData):
 
     coordinates = get_coordinates(selected_location)
 
-    nearby = get_nearby_places(
-        coordinates["latitude"],
-        coordinates["longitude"]
-    )
+    if coordinates:
+        nearby = get_nearby_places(
+            coordinates["latitude"],
+            coordinates["longitude"]
+        )
+    else:
+        nearby = {"hospitals": [], "schools": [], "malls": [], "police_stations": []}
 
     return {
         "predicted_prices": future_prices,
 
         "location": selected_location,
 
-        "coordinates": {
-            "latitude": coordinates["latitude"],
-            "longitude": coordinates["longitude"],
-            "display_name": coordinates["display_name"]
-        },
+        "coordinates": coordinates,
 
         "nearby": nearby,
 
