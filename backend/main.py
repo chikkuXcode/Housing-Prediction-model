@@ -1,6 +1,6 @@
 from fastapi import FastAPI,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel,Field
+from pydantic import BaseModel, Field, model_validator
 from typing import Annotated
 import joblib
 import pandas as pd
@@ -34,13 +34,95 @@ model_column = joblib.load("model_columns.pkl")
 locations = joblib.load("locations.pkl")
 
 
-class HouseData(BaseModel):
-    location: Annotated[str,Field(...)]
-    total_sqft: Annotated[float,Field(...,gt=0)]
-    bath: Annotated[int, Field(...,ge=0)]
-    balcony: Annotated[int,Field(...,ge=0)]
-    bhk: Annotated[int,Field(...,ge=0)]
+from pydantic import BaseModel, Field, model_validator
+from typing import Annotated
 
+
+class HouseData(BaseModel):
+
+    location: Annotated[
+        str,
+        Field(..., min_length=1)
+    ]
+
+    total_sqft: Annotated[
+        float,
+        Field(..., gt=0, le=50000)
+    ]
+
+    bath: Annotated[
+        int,
+        Field(..., ge=0, le=20)
+    ]
+
+    balcony: Annotated[
+        int,
+        Field(..., ge=0, le=3)
+    ]
+
+    bhk: Annotated[
+        int,
+        Field(..., ge=1, le=16)
+    ]
+
+    @model_validator(mode="after")
+    def validate_house(self):
+
+        minimum_sqft = {
+            1: 300,
+            2: 600,
+            3: 900,
+            4: 1200,
+            5: 1500,
+            6: 1800,
+            7: 2400,
+            8: 2400,
+            9: 3200,
+            10: 3300,
+            11: 5000,
+            13: 5425,
+            16: 10000
+        }
+
+        maximum_bath = {
+            1: 2,
+            2: 4,
+            3: 6,
+            4: 8,
+            5: 7,
+            6: 9,
+            7: 9,
+            8: 8,
+            9: 9,
+            10: 12,
+            11: 12,
+            13: 13,
+            16: 16
+        }
+
+        if self.bhk not in minimum_sqft:
+            raise ValueError(
+                "Selected BHK is not available in training data"
+            )
+
+        if self.total_sqft < minimum_sqft[self.bhk]:
+            raise ValueError(
+                f"For {self.bhk} BHK, minimum area should be "
+                f"{minimum_sqft[self.bhk]} sq.ft."
+            )
+
+        if self.bath > maximum_bath[self.bhk]:
+            raise ValueError(
+                f"For {self.bhk} BHK, maximum bathrooms allowed are "
+                f"{maximum_bath[self.bhk]}."
+            )
+
+        if self.balcony > 3:
+            raise ValueError(
+                "Maximum 3 balconies are allowed."
+            )
+
+        return self
 
 def get_coordinates(location):
 

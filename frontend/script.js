@@ -1,22 +1,15 @@
-const API_URL =
-    "http://127.0.0.1:8000";
+const API_URL = "http://127.0.0.1:8000";
 
 
 async function loadLocations() {
 
-    const select =
-        document.getElementById(
-            "location"
-        );
-
+    const select = document.getElementById("location");
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/locations`
-            );
-
+        const response = await fetch(
+            `${API_URL}/locations`
+        );
 
         if (!response.ok) {
 
@@ -26,50 +19,32 @@ async function loadLocations() {
 
         }
 
-
-        const locations =
-            await response.json();
-
+        const locations = await response.json();
 
         select.innerHTML =
             '<option value="">Select Location</option>';
 
+        locations.forEach(location => {
 
-        locations.forEach(
-            location => {
+            const option =
+                document.createElement("option");
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+            option.value = location;
 
+            option.textContent = location;
 
-                option.value =
-                    location;
+            select.appendChild(option);
 
-
-                option.textContent =
-                    location;
-
-
-                select.appendChild(
-                    option
-                );
-
-            }
-        );
-
+        });
 
     } catch (error) {
 
         select.innerHTML =
             '<option value="">Unable to load locations</option>';
 
-
         showError(
             "Locations load nahi ho paayi. Backend check karo."
         );
-
 
         console.error(error);
 
@@ -81,42 +56,30 @@ async function loadLocations() {
 async function predictHouse() {
 
     const location =
-        document.getElementById(
-            "location"
-        ).value;
-
+        document.getElementById("location").value;
 
     const total_sqft =
         Number(
-            document.getElementById(
-                "total_sqft"
-            ).value
+            document.getElementById("total_sqft").value
         );
-
 
     const bath =
         Number(
-            document.getElementById(
-                "bath"
-            ).value
+            document.getElementById("bath").value
         );
-
 
     const balcony =
         Number(
-            document.getElementById(
-                "balcony"
-            ).value
+            document.getElementById("balcony").value
         );
-
 
     const bhk =
         Number(
-            document.getElementById(
-                "bhk"
-            ).value
+            document.getElementById("bhk").value
         );
 
+
+    // Location validation
 
     if (!location) {
 
@@ -125,57 +88,153 @@ async function predictHouse() {
         );
 
         return;
-
     }
 
 
+    // Area validation
+
     if (
-        !total_sqft ||
+        !Number.isFinite(total_sqft) ||
         total_sqft <= 0
     ) {
 
         showError(
-            "Please enter valid area."
+            "Please enter a valid area."
         );
 
         return;
-
     }
 
 
-    if (!bhk && bhk !== 0) {
+    if (total_sqft > 50000) {
 
         showError(
-            "Please select BHK."
+            "Area cannot be more than 50,000 sq.ft."
         );
 
         return;
-
     }
 
 
-    if (!bath && bath !== 0) {
+    // BHK validation
+
+    if (
+        !Number.isInteger(bhk) ||
+        bhk < 1
+    ) {
 
         showError(
-            "Please select bathrooms."
+            "Please select a valid BHK."
         );
 
         return;
+    }
 
+
+    // Bathroom validation
+
+    if (
+        !Number.isInteger(bath) ||
+        bath < 0
+    ) {
+
+        showError(
+            "Please select valid bathrooms."
+        );
+
+        return;
+    }
+
+
+    // Balcony validation
+
+    if (
+        !Number.isInteger(balcony) ||
+        balcony < 0 ||
+        balcony > 3
+    ) {
+
+        showError(
+            "Balcony must be between 0 and 3."
+        );
+
+        return;
+    }
+
+
+    // Minimum area according to BHK
+
+    const minimumSqft = {
+
+        1: 300,
+        2: 600,
+        3: 900,
+        4: 1200,
+        5: 1500,
+        6: 1800,
+        7: 2400,
+        8: 2400,
+        9: 3200,
+        10: 3300,
+        11: 5000,
+        13: 5425,
+        16: 10000
+
+    };
+
+
+    if (!(bhk in minimumSqft)) {
+
+        showError(
+            "This BHK is not available in our training data."
+        );
+
+        return;
     }
 
 
     if (
-        !balcony &&
-        balcony !== 0
+        total_sqft < minimumSqft[bhk]
     ) {
 
         showError(
-            "Please select balcony."
+            `For ${bhk} BHK, minimum area should be ${minimumSqft[bhk]} sq.ft.`
         );
 
         return;
+    }
 
+
+    // Maximum bathrooms according to BHK
+
+    const maximumBath = {
+
+        1: 2,
+        2: 4,
+        3: 6,
+        4: 8,
+        5: 7,
+        6: 9,
+        7: 9,
+        8: 8,
+        9: 9,
+        10: 12,
+        11: 12,
+        13: 13,
+        16: 16
+
+    };
+
+
+    if (
+        bath > maximumBath[bhk]
+    ) {
+
+        showError(
+            `For ${bhk} BHK, maximum bathrooms allowed are ${maximumBath[bhk]}.`
+        );
+
+        return;
     }
 
 
@@ -198,25 +257,19 @@ async function predictHouse() {
                             "application/json"
                     },
 
-                    body:
-                        JSON.stringify({
+                    body: JSON.stringify({
 
-                            location:
-                                location,
+                        location: location,
 
-                            total_sqft:
-                                total_sqft,
+                        total_sqft: total_sqft,
 
-                            bath:
-                                bath,
+                        bath: bath,
 
-                            balcony:
-                                balcony,
+                        balcony: balcony,
 
-                            bhk:
-                                bhk
+                        bhk: bhk
 
-                        })
+                    })
 
                 }
             );
@@ -226,20 +279,48 @@ async function predictHouse() {
             await response.json();
 
 
+        // Backend error
+
         if (!response.ok) {
 
-            throw new Error(
-                data.detail ||
-                "Prediction failed"
-            );
+            let message =
+                "Prediction failed.";
+
+
+            if (
+                Array.isArray(data.detail)
+            ) {
+
+                message =
+                    data.detail
+                        .map(error => error.msg)
+                        .join(", ");
+
+            }
+
+            else if (
+                data.detail
+            ) {
+
+                message =
+                    data.detail;
+
+            }
+
+
+            throw new Error(message);
 
         }
 
 
+        // Prediction successful
+
         displayResult(data);
 
+    }
 
-    } catch (error) {
+
+    catch (error) {
 
         showError(
             error.message
@@ -247,7 +328,10 @@ async function predictHouse() {
 
         console.error(error);
 
-    } finally {
+    }
+
+
+    finally {
 
         hideLoading();
 
@@ -259,14 +343,10 @@ async function predictHouse() {
 function displayResult(data) {
 
     const result =
-        document.getElementById(
-            "result"
-        );
+        document.getElementById("result");
 
 
-    result.classList.remove(
-        "hidden"
-    );
+    result.classList.remove("hidden");
 
 
     const prices =
@@ -300,24 +380,19 @@ function displayResult(data) {
     document.getElementById(
         "displayName"
     ).textContent =
-        data.coordinates
-            .display_name;
+        data.coordinates.display_name;
 
 
     document.getElementById(
         "latitude"
     ).textContent =
-        `Latitude: ${
-            data.coordinates.latitude
-        }`;
+        `Latitude: ${data.coordinates.latitude}`;
 
 
     document.getElementById(
         "longitude"
     ).textContent =
-        `Longitude: ${
-            data.coordinates.longitude
-        }`;
+        `Longitude: ${data.coordinates.longitude}`;
 
 
     result.scrollIntoView({
@@ -327,28 +402,20 @@ function displayResult(data) {
 }
 
 
-function displayPrices(
-    prices
-) {
+function displayPrices(prices) {
 
     const container =
-        document.getElementById(
-            "priceCards"
-        );
+        document.getElementById("priceCards");
 
 
     container.innerHTML = "";
 
 
-    Object.entries(
-        prices
-    ).forEach(
+    Object.entries(prices).forEach(
         ([year, price]) => {
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             card.className =
@@ -368,9 +435,7 @@ function displayPrices(
             `;
 
 
-            container.appendChild(
-                card
-            );
+            container.appendChild(card);
 
         }
     );
@@ -378,9 +443,7 @@ function displayPrices(
 }
 
 
-function displayFacilities(
-    nearby
-) {
+function displayFacilities(nearby) {
 
     displayPlaces(
         "hospitals",
@@ -413,9 +476,14 @@ function displayPlaces(elementId, places) {
     const container =
         document.getElementById(elementId);
 
+
     container.innerHTML = "";
 
-    if (!places || places.length === 0) {
+
+    if (
+        !places ||
+        places.length === 0
+    ) {
 
         container.innerHTML = `
             <div class="place">
@@ -426,17 +494,23 @@ function displayPlaces(elementId, places) {
         `;
 
         return;
+
     }
+
 
     places.forEach(place => {
 
         const div =
             document.createElement("div");
 
+
         div.className = "place";
 
+
         div.innerHTML = `
+
             <div>
+
                 <div class="place-name">
                     ${escapeHtml(place.name)}
                 </div>
@@ -448,16 +522,20 @@ function displayPlaces(elementId, places) {
                 >
                     View on Map
                 </a>
+
             </div>
 
             <span class="distance">
                 ${place.distance_km} km
             </span>
+
         `;
+
 
         container.appendChild(div);
 
     });
+
 }
 
 
@@ -469,22 +547,19 @@ function formatPrice(price) {
 
     }
 
+
     return `₹${price.toFixed(2)} Lakh`;
 
 }
 
-function escapeHtml(
-    text
-) {
+
+function escapeHtml(text) {
 
     const div =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
-    div.textContent =
-        text;
+    div.textContent = text;
 
 
     return div.innerHTML;
@@ -495,18 +570,12 @@ function escapeHtml(
 function showLoading() {
 
     document
-        .getElementById(
-            "loading"
-        )
-        .classList.remove(
-            "hidden"
-        );
+        .getElementById("loading")
+        .classList.remove("hidden");
 
 
     document
-        .getElementById(
-            "predictBtn"
-        )
+        .getElementById("predictBtn")
         .disabled = true;
 
 }
@@ -515,40 +584,28 @@ function showLoading() {
 function hideLoading() {
 
     document
-        .getElementById(
-            "loading"
-        )
-        .classList.add(
-            "hidden"
-        );
+        .getElementById("loading")
+        .classList.add("hidden");
 
 
     document
-        .getElementById(
-            "predictBtn"
-        )
+        .getElementById("predictBtn")
         .disabled = false;
 
 }
 
 
-function showError(
-    message
-) {
+function showError(message) {
 
     const error =
-        document.getElementById(
-            "error"
-        );
+        document.getElementById("error");
 
 
     error.textContent =
         message;
 
 
-    error.classList.remove(
-        "hidden"
-    );
+    error.classList.remove("hidden");
 
 }
 
@@ -556,12 +613,8 @@ function showError(
 function hideError() {
 
     document
-        .getElementById(
-            "error"
-        )
-        .classList.add(
-            "hidden"
-        );
+        .getElementById("error")
+        .classList.add("hidden");
 
 }
 
