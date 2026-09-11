@@ -1,61 +1,82 @@
-const FACILITY_CONFIG = {
+const CATEGORY_CONFIG = {
   hospitals: {
-    label: 'Healthcare Facilities',
-    code: 'MED',
-    icon: '🏥',
+    title: 'Hospitals & Healthcare',
+    colorTheme: 'pink',
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21h18" />
+        <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16" />
+        <path d="M12 7v6" />
+        <path d="M9 10h6" />
+      </svg>
+    ),
   },
   schools: {
-    label: 'Educational Institutions',
-    code: 'EDU',
-    icon: '🏫',
+    title: 'Education',
+    colorTheme: 'green',
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+      </svg>
+    ),
   },
   malls: {
-    label: 'Commercial & Retail Centers',
-    code: 'RTL',
-    icon: '🛍️',
+    title: 'Shopping & Services',
+    colorTheme: 'blue',
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+        <path d="M3 6h18" />
+        <path d="M16 10a4 4 0 0 1-8 0" />
+      </svg>
+    ),
   },
   police_stations: {
-    label: 'Civic & Police Infrastructure',
-    code: 'CIV',
-    icon: '👮',
+    title: 'Safety & Others',
+    colorTheme: 'orange',
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg>
+    ),
   },
 };
 
 export default function FacilityCard({ type, places }) {
-  const config = FACILITY_CONFIG[type] || { label: type, code: 'FAC', icon: '📍' };
+  const config = CATEGORY_CONFIG[type] || {
+    title: type,
+    colorTheme: 'blue',
+    icon: '📍',
+  };
 
   return (
-    <div className="facility-card-mod">
-      <div className="facility-card-header">
-        <div className="facility-title-group">
-          <div className="facility-category-badge">{config.icon}</div>
-          <div>
-            <h4 className="facility-title-text">{config.label}</h4>
-            <span className="facility-count-tag">Top 5 Proximate Assets</span>
-          </div>
-        </div>
-        <span className="label-md">{config.code}</span>
+    <div className="amenity-category-box">
+      <div className={`category-header-strip ${config.colorTheme}`}>
+        <div className="cat-icon-chip">{config.icon}</div>
+        <span className="cat-title-text">{config.title}</span>
       </div>
 
-      {!places || places.length === 0 ? (
-        <div className="facility-empty-state">No registered assets located within 10 km radius</div>
-      ) : (
-        places.map((place, i) => (
-          <div className="facility-row-item" key={i}>
-            <div>
+      <div className="category-items-list">
+        {!places || places.length === 0 ? (
+          <div className="amenity-empty-notice">No places listed within 10 km</div>
+        ) : (
+          places.map((place, idx) => (
+            <div className="amenity-row-entry" key={idx}>
               <a
                 href={place.map_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="facility-name-link"
+                className="amenity-name-link"
+                title={place.name}
               >
-                {place.name || 'Unnamed Institution'} ↗
+                {place.name || 'Nearby Facility'}
               </a>
+              <span className="amenity-dist-badge tnum">{place.distance_km} km</span>
             </div>
-            <div className="facility-dist-chip tnum">{place.distance_km} km</div>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }

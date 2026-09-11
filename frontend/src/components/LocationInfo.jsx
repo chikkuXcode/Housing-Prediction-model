@@ -1,24 +1,23 @@
 export default function LocationInfo({ coordinates }) {
-  const { latitude, longitude, display_name } = coordinates;
-  const mapsUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=15/${latitude}/${longitude}`;
+  const mapsUrl = coordinates
+    ? `https://www.openstreetmap.org/?mlat=${coordinates.latitude}&mlon=${coordinates.longitude}#map=15/${coordinates.latitude}/${coordinates.longitude}`
+    : 'https://www.openstreetmap.org/';
 
   return (
-    <div className="card-level-1 location-intel-card">
-      <div className="location-intel-main">
-        <span className="label-md" style={{ color: 'var(--secondary)' }}>
-          Geospatial Intelligence
-        </span>
-        <h4 className="location-intel-title">Geocoded Cadastral Reference</h4>
-        <p className="location-intel-address">{display_name}</p>
-        <div className="coords-strip">
-          <div className="coord-tag">
-            <span>LAT:</span>
-            <strong className="tnum">{latitude.toFixed(6)}</strong>
-          </div>
-          <div className="coord-tag">
-            <span>LON:</span>
-            <strong className="tnum">{longitude.toFixed(6)}</strong>
-          </div>
+    <div className="re-card datasource-card">
+      <div className="datasource-left">
+        <div className="datasource-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg>
+        </div>
+        <div>
+          <h4 className="datasource-title">Data Source</h4>
+          <p className="datasource-text">
+            This analysis is based on publicly available real estate data, government records and neighbourhood information.
+          </p>
         </div>
       </div>
 
@@ -27,9 +26,13 @@ export default function LocationInfo({ coordinates }) {
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary"
+          className="datasource-btn"
         >
-          Open Cartography ↗
+          <span>Learn More</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
         </a>
       </div>
     </div>

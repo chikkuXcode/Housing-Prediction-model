@@ -1,18 +1,17 @@
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="footer">
-      <div className="footer-content">
-        <div className="footer-left">
-          <div className="navbar-logo-mark" style={{ width: 24, height: 24, fontSize: 11 }}>
-            EI
-          </div>
-          <span className="footer-text">
-            <strong>Estate Intel</strong> &mdash; Algorithmic Asset Valuation &amp; Spatial Intelligence
-          </span>
+    <footer className="re-footer">
+      <div className="re-footer-inner">
+        <div className="footer-brand-side">
+          <span className="footer-brand-title">RealEstate</span>
+          <span className="footer-brand-subtitle">Price Prediction with Neighbourhood Analytics</span>
         </div>
 
-        <div className="footer-legal">
-          &copy; {new Date().getFullYear()} Estate Intel. OpenStreetMap &middot; Linear Regression Kernel.
+
+        <div className="footer-copyright">
+          &copy; {currentYear} RealEstate. All rights reserved.
         </div>
       </div>
     </footer>

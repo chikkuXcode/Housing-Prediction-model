@@ -1,81 +1,129 @@
-function formatPrice(price) {
+import { useState } from 'react';
+
+function formatShortPrice(price) {
   if (price >= 100) {
-    return `₹${(price / 100).toFixed(2)} Cr`;
+    const cr = price / 100;
+    return cr % 1 === 0 ? `₹${cr} Cr` : `₹${cr.toFixed(cr >= 10 ? 1 : 2)} Cr`;
+  }
+  return `₹${price.toFixed(1)} L`;
+}
+
+function formatFullPrice(price) {
+  if (price >= 100) {
+    return `₹${(price / 100).toFixed(2)} Crore`;
   }
   return `₹${price.toFixed(2)} Lakh`;
 }
 
 export default function PriceProjection({ prices }) {
+  const [activeTab, setActiveTab] = useState('chart');
+
+  if (!prices || Object.keys(prices).length === 0) return null;
+
   const entries = Object.entries(prices);
   const values = entries.map(([, v]) => v);
   const maxVal = Math.max(...values);
+  const base2022 = prices['2022'] || values[0];
 
   return (
-    <div className="card-level-1 projection-card">
-      <div className="section-header-block">
-        <div>
-          <h3 className="section-title-main">Appreciation Trajectory</h3>
-          <p className="section-subtitle-main">5-Year compound extrapolation based on 8.5% annual capital index</p>
+    <div className="re-card price-trend-card">
+      <div className="trend-header-row">
+        <div className="section-card-header" style={{ marginBottom: 0 }}>
+          <div className="section-icon-badge chart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          </div>
+          <div className="section-title-wrap">
+            <h3>Price Trend</h3>
+            <p>See how property prices are expected to change in the coming years.</p>
+          </div>
         </div>
-        <span className="label-md">Projection Series</span>
+
+        {/* Chart / Table View Switcher */}
+        <div className="tab-pill-group" role="tablist">
+          <button
+            type="button"
+            className={`tab-btn ${activeTab === 'chart' ? 'active' : ''}`}
+            onClick={() => setActiveTab('chart')}
+            role="tab"
+            aria-selected={activeTab === 'chart'}
+          >
+            Chart
+          </button>
+          <button
+            type="button"
+            className={`tab-btn ${activeTab === 'table' ? 'active' : ''}`}
+            onClick={() => setActiveTab('table')}
+            role="tab"
+            aria-selected={activeTab === 'table'}
+          >
+            Table
+          </button>
+        </div>
       </div>
 
-      {/* Architectural Bar Chart */}
-      <div className="projection-chart-container">
-        {entries.map(([year, price]) => {
-          const pct = Math.round((price / maxVal) * 100);
-          const isTarget = year === '2026';
-          return (
-            <div className="chart-bar-column" key={year}>
-              <span className="chart-val-label tnum">{formatPrice(price)}</span>
-              <div className="bar-track">
-                <div
-                  className={`bar-fill ${isTarget ? 'target-year' : ''}`}
-                  style={{ '--bar-height': `${pct}%` }}
-                />
-              </div>
-              <span className={`chart-year-label ${isTarget ? 'active' : ''}`}>{year}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Data Table */}
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Fiscal Year</th>
-            <th>Appreciation Index</th>
-            <th>Estimated Asset Valuation</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
+      {activeTab === 'chart' ? (
+        /* ── Clean Vertical Bar Chart Matching Reference ── */
+        <div className="chart-columns-wrap">
           {entries.map(([year, price]) => {
             const isTarget = year === '2026';
-            const base2022 = prices['2022'] || price;
-            const growthFromBase = (((price - base2022) / base2022) * 100).toFixed(1);
+            const pct = Math.max(15, Math.round((price / maxVal) * 100));
             return (
-              <tr key={year}>
-                <td className="tnum" style={{ fontWeight: 600 }}>
-                  {year}
-                </td>
-                <td className="tnum" style={{ color: 'var(--on-surface-variant)' }}>
-                  {year === '2022' ? 'Baseline' : `+${growthFromBase}%`}
-                </td>
-                <td className="tnum" style={{ fontWeight: isTarget ? 700 : 500, color: isTarget ? 'var(--secondary)' : 'var(--on-surface)' }}>
-                  {formatPrice(price)}
-                </td>
-                <td>
-                  <span className="label-sm" style={{ color: isTarget ? 'var(--secondary)' : 'var(--outline)' }}>
-                    {isTarget ? 'Target Horizon' : 'Historical Trend'}
-                  </span>
-                </td>
-              </tr>
+              <div className="chart-bar-item" key={year}>
+                <span className="chart-price-tag tnum">{formatShortPrice(price)}</span>
+                <div className="chart-pillar-track">
+                  <div
+                    className={`chart-pillar-bar ${isTarget ? 'target-year' : ''}`}
+                    style={{ '--bar-height': `${pct}%` }}
+                  />
+                </div>
+                <span className={`chart-year-tag ${isTarget ? 'active' : ''}`}>{year}</span>
+              </div>
             );
           })}
-        </tbody>
-      </table>
+        </div>
+      ) : (
+        /* ── Friendly Clean Data Table ── */
+        <div className="clean-table-container">
+          <table className="clean-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Price Growth</th>
+                <th>Estimated Price</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map(([year, price]) => {
+                const isTarget = year === '2026';
+                const growth = (((price - base2022) / base2022) * 100).toFixed(1);
+                return (
+                  <tr key={year}>
+                    <td className="tnum" style={{ fontWeight: 700 }}>
+                      {year}
+                    </td>
+                    <td className="tnum" style={{ color: 'var(--slate-500)' }}>
+                      {year === '2022' ? 'Baseline' : `+${growth}%`}
+                    </td>
+                    <td className="tnum" style={{ fontWeight: isTarget ? 800 : 600, color: isTarget ? 'var(--primary-blue)' : 'var(--navy-900)' }}>
+                      {formatFullPrice(price)}
+                    </td>
+                    <td>
+                      <span className={`tag-clean-status ${isTarget ? 'current' : 'past'}`}>
+                        {isTarget ? 'Target Forecast' : 'Historical Trend'}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
