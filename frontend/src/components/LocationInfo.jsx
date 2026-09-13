@@ -6,17 +6,18 @@ export default function LocationInfo({ coordinates }) {
     <div className="card-level-1 location-intel-card">
       <div className="location-intel-main">
         <span className="label-md" style={{ color: 'var(--secondary)' }}>
-          Geospatial Intelligence
+          Map Details
         </span>
-        <h4 className="location-intel-title">Geocoded Cadastral Reference</h4>
+        <h4 className="location-intel-title">Area Coordinates</h4>
         <p className="location-intel-address">{display_name}</p>
+
         <div className="coords-strip">
           <div className="coord-tag">
-            <span>LAT:</span>
+            <span>Latitude:</span>
             <strong className="tnum">{latitude.toFixed(6)}</strong>
           </div>
           <div className="coord-tag">
-            <span>LON:</span>
+            <span>Longitude:</span>
             <strong className="tnum">{longitude.toFixed(6)}</strong>
           </div>
         </div>
@@ -29,7 +30,7 @@ export default function LocationInfo({ coordinates }) {
           rel="noopener noreferrer"
           className="btn-secondary"
         >
-          Open Cartography ↗
+          View on Map ↗
         </a>
       </div>
     </div>

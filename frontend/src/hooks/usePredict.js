@@ -41,5 +41,10 @@ export function usePredict() {
     }
   }, []);
 
-  return { result, loading, error, predict };
+  const clear = useCallback(() => {
+    setResult(null);
+    setError(null);
+  }, []);
+
+  return { result, loading, error, predict, clear };
 }

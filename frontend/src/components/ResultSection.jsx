@@ -23,41 +23,38 @@ export default function ResultSection({ data }) {
 
   return (
     <section ref={sectionRef} className="results-container">
-      {/* ── Valuation Spotlight Card ── */}
       <div className="valuation-spotlight">
         <div className="spotlight-left">
-          <span className="spotlight-tag">2026 Benchmark Valuation</span>
+          <span className="spotlight-tag">Estimated House Price (2026)</span>
           <div className="spotlight-price tnum">{formatPrice(currentPrice)}</div>
           <div className="spotlight-location">
             <span>&bull;</span>
             <strong>{location}</strong>
-            <span style={{ color: 'var(--outline)' }}>&middot; Sub-market Zone</span>
+            <span style={{ color: 'var(--outline)' }}>&middot; Bengaluru, Karnataka</span>
           </div>
         </div>
 
         <div className="spotlight-right-meta">
           <div className="meta-pill">
-            <span>Confidence Index:</span>
-            <strong>High (OLS Verified)</strong>
+            <span>Valuation Basis:</span>
+            <strong>Bengaluru Market Index</strong>
           </div>
           <div className="meta-pill">
-            <span>Spatial Radius:</span>
-            <strong>{data.search_radius_km} KM Dense Search</strong>
+            <span>Radius Analyzed:</span>
+            <strong>{data.search_radius_km} KM Surrounding Area</strong>
           </div>
         </div>
       </div>
 
-      {/* ── 5-Year Trajectory ── */}
       <PriceProjection prices={predicted_prices} />
 
-      {/* ── Proximate Civic Amenities Grid ── */}
       <div>
         <div className="section-header-block">
           <div>
-            <h3 className="section-title-main">Geospatial Amenity Matrix</h3>
-            <p className="section-subtitle-main">Surrounding urban infrastructure within a {data.search_radius_km} km radius</p>
+            <h3 className="section-title-main">Nearby Facilities &amp; Amenities</h3>
+            <p className="section-subtitle-main">Hospitals, schools, malls, and police stations within {data.search_radius_km} km</p>
           </div>
-          <span className="label-md">Density Analysis</span>
+          <span className="label-md">Verified Amenities</span>
         </div>
 
         <div className="facilities-grid">
@@ -67,7 +64,6 @@ export default function ResultSection({ data }) {
         </div>
       </div>
 
-      {/* ── Cadastral & Coordinates Card ── */}
       <LocationInfo coordinates={coordinates} />
     </section>
   );

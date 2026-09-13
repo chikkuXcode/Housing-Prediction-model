@@ -14,13 +14,12 @@ export default function PriceProjection({ prices }) {
     <div className="card-level-1 projection-card">
       <div className="section-header-block">
         <div>
-          <h3 className="section-title-main">Appreciation Trajectory</h3>
-          <p className="section-subtitle-main">5-Year compound extrapolation based on 8.5% annual capital index</p>
+          <h3 className="section-title-main">5-Year Price Growth Trend</h3>
+          <p className="section-subtitle-main">Estimated annual value appreciation based on Bangalore market growth</p>
         </div>
-        <span className="label-md">Projection Series</span>
+        <span className="label-md">2022 &ndash; 2026</span>
       </div>
 
-      {/* Architectural Bar Chart */}
       <div className="projection-chart-container">
         {entries.map(([year, price]) => {
           const pct = Math.round((price / maxVal) * 100);
@@ -40,14 +39,13 @@ export default function PriceProjection({ prices }) {
         })}
       </div>
 
-      {/* Data Table */}
       <table className="data-table">
         <thead>
           <tr>
-            <th>Fiscal Year</th>
-            <th>Appreciation Index</th>
-            <th>Estimated Asset Valuation</th>
-            <th>Status</th>
+            <th>Year</th>
+            <th>Growth from 2022</th>
+            <th>Estimated Price</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
@@ -68,7 +66,7 @@ export default function PriceProjection({ prices }) {
                 </td>
                 <td>
                   <span className="label-sm" style={{ color: isTarget ? 'var(--secondary)' : 'var(--outline)' }}>
-                    {isTarget ? 'Target Horizon' : 'Historical Trend'}
+                    {isTarget ? 'Current Value' : 'Past Trend'}
                   </span>
                 </td>
               </tr>

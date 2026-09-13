@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useLocations } from '../hooks/usePredict';
 
 const SELECT_OPTIONS = {
@@ -10,8 +11,12 @@ const SELECT_OPTIONS = {
 const INITIAL = { location: '', total_sqft: '', bhk: '', bath: '', balcony: '' };
 
 export default function PredictionForm({ onPredict, loading }) {
+  const [searchParams] = useSearchParams();
+  const locParam = searchParams.get('location') || '';
+
   const { locations, loading: locsLoading, error: locsError, load } = useLocations();
-  const [form, setForm] = useState(INITIAL);
+
+  const [form, setForm] = useState(() => ({ ...INITIAL, location: locParam }));
   const [validationError, setValidationError] = useState('');
 
   useEffect(() => {
@@ -22,12 +27,12 @@ export default function PredictionForm({ onPredict, loading }) {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const validate = () => {
-    if (!form.location) return 'Property location selection is required.';
+    if (!form.location) return 'Please select a location in Bangalore.';
     if (!form.total_sqft || Number(form.total_sqft) <= 0)
-      return 'Valid total built-up area (sq.ft) is required.';
-    if (form.bhk === '') return 'Bedroom (BHK) configuration is required.';
-    if (form.bath === '') return 'Bathroom count selection is required.';
-    if (form.balcony === '') return 'Balcony count selection is required.';
+      return 'Please enter a valid total area in sq.ft.';
+    if (form.bhk === '') return 'Please select the BHK configuration.';
+    if (form.bath === '') return 'Please select the number of bathrooms.';
+    if (form.balcony === '') return 'Please select the number of balconies.';
     return '';
   };
 
@@ -39,6 +44,7 @@ export default function PredictionForm({ onPredict, loading }) {
       return;
     }
     setValidationError('');
+
     onPredict({
       location: form.location,
       total_sqft: Number(form.total_sqft),
@@ -52,19 +58,18 @@ export default function PredictionForm({ onPredict, loading }) {
     <div className="card-level-1 form-card">
       <div className="card-header-bar">
         <div className="card-header-left">
-          <h2 className="card-header-title">Asset Parameters</h2>
-          <p className="card-header-subtitle">Specify spatial and structural attributes for regression analysis</p>
+          <h2 className="card-header-title">Enter House Details</h2>
+          <p className="card-header-subtitle">Provide property details like area, bedrooms, and location to predict the price</p>
         </div>
-        <span className="label-md">Model Input</span>
+        <span className="label-md">Input Form</span>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
-          {/* Location */}
           <div className="form-group full">
             <label className="form-label" htmlFor="location">
-              <span>Sub-market / Location</span>
-              {locsLoading && <span className="form-label-hint">Loading sub-markets...</span>}
+              <span>Select Location / Area</span>
+              {locsLoading && <span className="form-label-hint">Loading locations...</span>}
             </label>
             <div className="input-container">
               <select
@@ -76,10 +81,10 @@ export default function PredictionForm({ onPredict, loading }) {
               >
                 <option value="">
                   {locsLoading
-                    ? 'Catalog loading...'
+                    ? 'Loading Bangalore localities...'
                     : locsError
-                      ? 'Catalog unavailable (backend offline)'
-                      : 'Select geographic zone...'}
+                      ? 'Localities temporarily unavailable'
+                      : 'Select a location in Bangalore...'}
                 </option>
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
@@ -90,12 +95,11 @@ export default function PredictionForm({ onPredict, loading }) {
             </div>
             {locsError && (
               <span className="helper-error-text">
-                Notice: Could not connect to the backend server (127.0.0.1:8000). Ensure the API is active.
+                Notice: Could not load the localities list. Please ensure the server is running or refresh the page.
               </span>
             )}
           </div>
 
-          {/* Area */}
           <div className="form-group">
             <label className="form-label" htmlFor="total_sqft">
               <span>Total Area</span>
@@ -114,11 +118,10 @@ export default function PredictionForm({ onPredict, loading }) {
             </div>
           </div>
 
-          {/* BHK */}
           <div className="form-group">
             <label className="form-label" htmlFor="bhk">
-              <span>Configuration</span>
-              <span className="form-label-hint">Bedrooms</span>
+              <span>Bedrooms (BHK)</span>
+              <span className="form-label-hint">Layout</span>
             </label>
             <div className="input-container">
               <select id="bhk" className="select-field" value={form.bhk} onChange={handle('bhk')}>
@@ -132,7 +135,6 @@ export default function PredictionForm({ onPredict, loading }) {
             </div>
           </div>
 
-          {/* Bathrooms */}
           <div className="form-group">
             <label className="form-label" htmlFor="bath">
               <span>Bathrooms</span>
@@ -150,7 +152,6 @@ export default function PredictionForm({ onPredict, loading }) {
             </div>
           </div>
 
-          {/* Balcony */}
           <div className="form-group">
             <label className="form-label" htmlFor="balcony">
               <span>Balconies</span>
@@ -179,16 +180,16 @@ export default function PredictionForm({ onPredict, loading }) {
           {loading ? (
             <>
               <div className="spinner-clean" />
-              <span>Calculating Model Output...</span>
+              <span>Predicting House Price...</span>
             </>
           ) : (
-            <span>Run Valuation Model</span>
+            <span>Predict House Price</span>
           )}
         </button>
 
         {loading && (
           <div className="loading-indicator">
-            <span>Executing regression solver and querying geospatial amenity matrix...</span>
+            <span>Calculating estimated market price and loading nearby facilities...</span>
           </div>
         )}
       </form>
