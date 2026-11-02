@@ -5,25 +5,25 @@ const MARKET_SEGMENTS = [
   {
     tier: 'Luxury / Central Areas',
     range: '₹14,000 – ₹24,000 / sq.ft',
-    areas: ['Indiranagar', 'Sadashiv Nagar', 'Koramangala', 'Lavelle Road'],
+    areas: ['Indira Nagar', 'Malleshwaram', 'Koramangala', 'Rajaji Nagar'],
     character: 'Premium central Bangalore localities with top restaurants, shopping, and high property rates.'
   },
   {
     tier: 'Major IT / Tech Hubs',
     range: '₹7,500 – ₹13,000 / sq.ft',
-    areas: ['Whitefield', 'HSR Layout', 'Bellandur', 'Marathahalli', 'Sarjapur Road'],
+    areas: ['Whitefield', 'HSR Layout', 'Bellandur', 'Marathahalli', 'Sarjapur'],
     character: 'Areas near tech parks and offices with high rental demand from software professionals.'
   },
   {
     tier: 'Affordable / Mid-Range Areas',
     range: '₹5,000 – ₹7,500 / sq.ft',
-    areas: ['Electronic City', 'Thanisandra', 'Kanakapura Road', 'Hennur Road'],
+    areas: ['Electronic City', 'Thanisandra', 'Uttarahalli', 'Hennur Road'],
     character: 'Ideal for families and first-time homebuyers with upcoming metro connectivity.'
   },
   {
     tier: 'Developing / Airport Corridor',
     range: '₹3,500 – ₹5,000 / sq.ft',
-    areas: ['Yelahanka', 'Devanahalli', 'Bagalur', 'Doddaballapur Road'],
+    areas: ['Yelahanka', 'Devanahalli', 'Hebbal', 'Yelahanka New Town'],
     character: 'North Bangalore near Kempegowda International Airport with great long-term growth potential.'
   }
 ];

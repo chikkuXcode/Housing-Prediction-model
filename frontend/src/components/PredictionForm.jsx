@@ -4,8 +4,8 @@ import { useLocations } from '../hooks/usePredict';
 
 const SELECT_OPTIONS = {
   bhk: [1, 2, 3, 4, 5],
-  bath: [0, 1, 2, 3, 4],
-  balcony: [0, 1, 2, 3, 4],
+  bath: [1, 2, 3, 4, 5],
+  balcony: [0, 1, 2, 3],
 };
 
 const INITIAL = { location: '', total_sqft: '', bhk: '', bath: '', balcony: '' };
@@ -22,6 +22,12 @@ export default function PredictionForm({ onPredict, loading }) {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    if (locParam) {
+      setForm((prev) => ({ ...prev, location: locParam }));
+    }
+  }, [locParam]);
 
   const handle = (field) => (e) =>
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -189,7 +195,7 @@ export default function PredictionForm({ onPredict, loading }) {
 
         {loading && (
           <div className="loading-indicator">
-            <span>Calculating estimated market price and loading nearby facilities...</span>
+            <span>Calculating estimated market price instantly...</span>
           </div>
         )}
       </form>

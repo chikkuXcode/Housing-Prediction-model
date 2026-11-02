@@ -3,11 +3,11 @@ import HeroSection from '../components/HeroSection';
 
 const FEATURED_LOCALITIES = [
   { name: 'Whitefield', tag: 'IT Hub', avgSqft: '₹7,800/sqft', desc: 'Major tech corridor in East Bangalore with top IT parks & metro connectivity' },
-  { name: 'Indiranagar', tag: 'Central', avgSqft: '₹14,500/sqft', desc: 'Prime neighborhood known for top dining, boutique shopping, and high demand' },
+  { name: 'Indira Nagar', tag: 'Central', avgSqft: '₹14,500/sqft', desc: 'Prime neighborhood known for top dining, boutique shopping, and high demand' },
   { name: 'Koramangala', tag: 'Commercial', avgSqft: '₹13,200/sqft', desc: 'Vibrant hub with startup offices, cafes, and premium residential spaces' },
   { name: 'Electronic City', tag: 'South Bangalore', avgSqft: '₹5,400/sqft', desc: 'Affordable IT belt with major corporate campuses like Infosys & Wipro' },
   { name: 'HSR Layout', tag: 'Popular', avgSqft: '₹11,000/sqft', desc: 'Modern planned layout with parks, schools, and seamless access to ORR' },
-  { name: 'Sarjapur Road', tag: 'Fast Growing', avgSqft: '₹6,900/sqft', desc: 'Rapidly developing corridor with leading international schools & townships' },
+  { name: 'Sarjapur', tag: 'Fast Growing', avgSqft: '₹6,900/sqft', desc: 'Rapidly developing corridor with leading international schools & townships' },
 ];
 
 const PLATFORM_FEATURES = [

@@ -44,12 +44,16 @@ A machine learning based housing price prediction system for Bengaluru, built wi
 ### Backend
 
 ```bash
-cd backend
 pip install -r requirements.txt
+cd backend
 uvicorn main:app --reload
 ```
 
 Runs on `http://127.0.0.1:8000`.
+
+The root `requirements.txt` contains the Python dependencies for the backend and
+the model-training notebook. The frontend dependencies are managed separately
+with `frontend/package.json`.
 
 ### Frontend
 

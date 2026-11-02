@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PriceProjection from './PriceProjection';
-import FacilityCard from './FacilityCard';
+import NearbySection from './NearbySection';
 import LocationInfo from './LocationInfo';
 
 function formatPrice(price) {
@@ -12,7 +12,7 @@ function formatPrice(price) {
 
 export default function ResultSection({ data }) {
   const sectionRef = useRef(null);
-  const { predicted_prices, location, coordinates, nearby } = data;
+  const { predicted_prices, location, coordinates } = data;
   const currentPrice = predicted_prices['2026'];
 
   useEffect(() => {
@@ -41,28 +41,18 @@ export default function ResultSection({ data }) {
           </div>
           <div className="meta-pill">
             <span>Radius Analyzed:</span>
-            <strong>{data.search_radius_km} KM Surrounding Area</strong>
+            <strong>{data.search_radius_km || 3} KM Surrounding Area</strong>
           </div>
         </div>
       </div>
 
       <PriceProjection prices={predicted_prices} />
 
-      <div>
-        <div className="section-header-block">
-          <div>
-            <h3 className="section-title-main">Nearby Facilities &amp; Amenities</h3>
-            <p className="section-subtitle-main">Hospitals, schools, malls, and police stations within {data.search_radius_km} km</p>
-          </div>
-          <span className="label-md">Verified Amenities</span>
-        </div>
-
-        <div className="facilities-grid">
-          {['hospitals', 'schools', 'malls', 'police_stations'].map((type) => (
-            <FacilityCard key={type} type={type} places={nearby[type]} />
-          ))}
-        </div>
-      </div>
+      <NearbySection
+        coordinates={coordinates}
+        location={location}
+        radius={data.search_radius_km || 3}
+      />
 
       <LocationInfo coordinates={coordinates} />
     </section>

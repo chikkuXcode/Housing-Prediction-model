@@ -1,17 +1,35 @@
-# Python / backend
+# Python / Virtual Environments
 venv/
+myenv/
 mvenv/
+env/
+ENV/
 .env
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
 
 # Node / frontend
+frontend/node_modules/
 node_modules/
 dist/
 dist-ssr/
 *.local
+.npm/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Editor / OS
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
