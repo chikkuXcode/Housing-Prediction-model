@@ -173,7 +173,7 @@ def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> fl
     R = 6371.0  # Earth radius in km
     lat1_rad = math.radians(lat1)
     lat2_rad = math.radians(lat2)
-    dlat = math.radians(lat2 - lat1)
+    dlat = lat2 - lat1
     dlon = math.radians(lon2 - lon1)
 
     a = (math.sin(dlat / 2) ** 2 +
