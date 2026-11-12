@@ -2,11 +2,11 @@ export default function HeroSection() {
   return (
     <section className="hero">
       <div className="hero-meta-badge">
-        Smart Property Valuation &middot; Bengaluru
+        Property Valuation &amp; Neighbourhood Analytics &middot; Bengaluru
       </div>
 
       <h1 className="hero-title">
-        Bengaluru House Price <span>Estimator</span>
+        Real Estate Price Prediction <span>with Neighbourhood Analytics</span>
       </h1>
 
       <p className="hero-description">

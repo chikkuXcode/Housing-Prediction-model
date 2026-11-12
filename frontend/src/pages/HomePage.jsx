@@ -75,7 +75,7 @@ export default function HomePage() {
           </div>
           <div className="workflow-step-card">
             <div className="step-number">02</div>
-            <h4 className="step-title">Intelligent Price Analysis</h4>
+            <h4 className="step-title">Data-Driven Price Analysis</h4>
             <p className="step-desc">
               Our valuation engine evaluates actual historic market sales across 240+ areas to calculate fair market pricing.
             </p>
@@ -93,8 +93,8 @@ export default function HomePage() {
       <section className="home-section">
         <div className="section-header-block">
           <div>
-            <span className="label-badge">Why Use HousePrice</span>
-            <h2 className="section-title-main">Everything You Need for Smart Decisions</h2>
+            <span className="label-badge">Why Choose Our Platform</span>
+            <h2 className="section-title-main">Everything You Need for Informed Decisions</h2>
             <p className="section-subtitle-main">
               Transparent market data to help you evaluate properties with confidence
             </p>
