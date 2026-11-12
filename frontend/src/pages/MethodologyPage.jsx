@@ -15,7 +15,7 @@ export default function MethodologyPage() {
         </div>
         <h1 className="page-title">How Our Valuation Works</h1>
         <p className="page-subtitle">
-          Learn how HousePrice estimates property values across Bangalore, what factors influence pricing, and how neighborhood infrastructure is evaluated.
+          Learn how Real Estate Price Prediction with Neighbourhood Analytics estimates property values across Bangalore, what factors influence pricing, and how neighborhood infrastructure is evaluated.
         </p>
       </div>
 

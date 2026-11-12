@@ -10,9 +10,11 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand" onClick={closeMobile}>
-          <div className="navbar-logo-mark">HP</div>
-          <span className="navbar-title">HousePrice</span>
-          <span className="navbar-tag">Bengaluru</span>
+          <div className="navbar-logo-mark">RE</div>
+          <div className="navbar-brand-text">
+            <span className="navbar-title">Real Estate Price Prediction with</span>
+            <span className="navbar-tag">Neighbourhood Analytics</span>
+          </div>
         </Link>
 
         <nav className="navbar-nav">
@@ -28,12 +30,6 @@ export default function Navbar() {
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
             Predict Price
-          </NavLink>
-          <NavLink
-            to="/analytics"
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            Localities &amp; Trends
           </NavLink>
           <NavLink
             to="/methodology"
@@ -82,13 +78,6 @@ export default function Navbar() {
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
           >
             Predict Price
-          </NavLink>
-          <NavLink
-            to="/analytics"
-            onClick={closeMobile}
-            className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
-          >
-            Localities &amp; Trends
           </NavLink>
           <NavLink
             to="/methodology"

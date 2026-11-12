@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const BHK_DISTRIBUTION = [
+  { bhk: '1 BHK', areaRange: '450 – 650 sq.ft', medianPrice: '₹35 – ₹55 Lakh', demand: 'Singles, students, working professionals' },
+  { bhk: '2 BHK', areaRange: '950 – 1,250 sq.ft', medianPrice: '₹65 Lakh – ₹1.15 Crore', demand: 'Most popular option for small families' },
+  { bhk: '3 BHK', areaRange: '1,450 – 2,100 sq.ft', medianPrice: '₹1.20 – ₹2.35 Crore', demand: 'Spacious apartments for medium/large families' },
+  { bhk: '4+ BHK', areaRange: '2,400 – 4,500+ sq.ft', medianPrice: '₹2.50 – ₹6.00+ Crore', demand: 'Luxury apartments and independent villas' },
+];
+
 const USE_CASES = [
   {
     icon: '🏠',
@@ -45,7 +52,7 @@ const POLICIES = [
 const TERMS = [
   {
     title: 'Informational Purpose Only',
-    text: 'All valuations displayed on this website are algorithmic approximations based on historical market trends. They are designed for preliminary research and do not substitute a certified property appraisal or bank valuation.'
+    text: 'All valuations displayed on this website are data-driven market approximations based on historical market trends. They are designed for preliminary research and do not substitute a certified property appraisal or bank valuation.'
   },
   {
     title: 'Individual Property Variables',
@@ -71,7 +78,7 @@ export default function ContactPage() {
         </div>
         <h1 className="page-title">About the Platform, Use Cases &amp; Policies</h1>
         <p className="page-subtitle">
-          Everything you need to know about HousePrice: who it is for, how it helps you make better property decisions, privacy policies, and terms of use.
+          Everything you need to know about Real Estate Price Prediction with Neighbourhood Analytics: who it is for, how it helps you make better property decisions, privacy policies, and terms of use.
         </p>
       </div>
 
@@ -80,13 +87,13 @@ export default function ContactPage() {
           <div className="card-header-bar">
             <div>
               <span className="label-badge">Overview</span>
-              <h2 className="card-header-title">About HousePrice</h2>
+              <h2 className="card-header-title">About Real Estate Price Prediction with Neighbourhood Analytics</h2>
             </div>
             <span className="meta-pill">Bangalore Property Guide</span>
           </div>
 
           <p className="methodology-text">
-            <strong>HousePrice</strong> is a free, transparent property valuation platform built specifically for Bangalore. Real estate pricing in this city can often be confusing and opaque, with different agents quoting wildly different prices for identical properties. Our goal is to empower everyday buyers, sellers, and renters with clear, honest market estimates based on historical transaction data and verified neighborhood benchmarks.
+            <strong>Real Estate Price Prediction with Neighbourhood Analytics</strong> is a free, transparent property valuation platform built specifically for Bangalore. Real estate pricing in this city can often be confusing and opaque, with different agents quoting wildly different prices for identical properties. Our goal is to empower everyday buyers, sellers, and renters with clear, honest market estimates based on historical transaction data and verified neighborhood benchmarks.
           </p>
 
           <div className="contact-spec-list" style={{ borderBottom: 'none', paddingBottom: 0 }}>
@@ -122,6 +129,39 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="home-section">
+        <div className="section-header-block">
+          <div>
+            <span className="label-badge">Market Benchmarks</span>
+            <h2 className="section-title-main">Typical Prices by BHK Layout</h2>
+            <p className="section-subtitle-main">Standard built-up area and estimated budget for 1, 2, 3, and 4 BHK homes</p>
+          </div>
+        </div>
+
+        <div className="table-responsive-card">
+          <table className="analytics-table">
+            <thead>
+              <tr>
+                <th>Configuration</th>
+                <th>Typical Area Range</th>
+                <th>Estimated Budget</th>
+                <th>Common Target Buyer</th>
+              </tr>
+            </thead>
+            <tbody>
+              {BHK_DISTRIBUTION.map((row, idx) => (
+                <tr key={idx}>
+                  <td><strong>{row.bhk}</strong></td>
+                  <td className="tnum">{row.areaRange}</td>
+                  <td className="tnum font-medium">{row.medianPrice}</td>
+                  <td><span className="meta-pill">{row.demand}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
