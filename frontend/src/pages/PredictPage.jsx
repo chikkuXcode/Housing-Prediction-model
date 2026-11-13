@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import PredictionForm from '../components/PredictionForm';
 import ResultSection from '../components/ResultSection';
+import EstimatedPriceCard from '../components/EstimatedPriceCard';
+import { PageHero } from '../components/Design';
 
 export default function PredictPage({ result, loading, error, predict, onClearResult }) {
   useEffect(() => {
@@ -9,16 +11,7 @@ export default function PredictPage({ result, loading, error, predict, onClearRe
 
   return (
     <div className="page-container">
-      <div className="page-header">
-        <div className="header-badge-row">
-          <span className="label-badge">Property Valuation</span>
-          <span className="status-pill-live">Instant Estimate</span>
-        </div>
-        <h1 className="page-title">Calculate House Price</h1>
-        <p className="page-subtitle">
-          Fill in the property details below to calculate the estimated market price and explore surrounding facilities like schools, hospitals, and shopping centers.
-        </p>
-      </div>
+      <PageHero variant="predict" title="Calculate Your" accent="Property Value" description="Get an estimated property price based on its location, size and key details. Explore the neighbourhood around it." />
 
       {result && (
         <div className="valuation-banner-bar">
@@ -36,7 +29,10 @@ export default function PredictPage({ result, loading, error, predict, onClearRe
         </div>
       )}
 
-      <PredictionForm onPredict={predict} loading={loading} />
+      <div className="prediction-grid">
+        <PredictionForm onPredict={predict} loading={loading} />
+        <EstimatedPriceCard result={result} loading={loading} />
+      </div>
 
       {error && (
         <div className="error-banner" role="alert">

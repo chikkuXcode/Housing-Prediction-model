@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { fetchNearbyPlaces } from '../api/predict';
 import FacilityCard from './FacilityCard';
 
-export default function NearbySection({ coordinates, location, radius = 3 }) {
+export default function NearbySection({ coordinates, location, radius = 5 }) {
   const [places, setPlaces] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -170,15 +170,6 @@ export default function NearbySection({ coordinates, location, radius = 3 }) {
             <span className="footer-meta-note">
               Found verified nearby amenities within {radius} km
             </span>
-            <button
-              type="button"
-              className="btn-refresh-subtle"
-              onClick={loadPlaces}
-              disabled={loading}
-              title="Refresh nearby places list"
-            >
-              {loading ? 'Refreshing...' : '🔄 Refresh Facilities'}
-            </button>
           </div>
         </>
       )}

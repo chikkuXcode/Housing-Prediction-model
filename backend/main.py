@@ -181,7 +181,7 @@ def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> fl
     c = 2 * math.asin(math.sqrt(a))
     return R * c
 
-def get_nearby_places(latitude: float, longitude: float, radius: int = 3000, location_name: Optional[str] = None):
+def get_nearby_places(latitude: float, longitude: float, radius: int = 5000, location_name: Optional[str] = None):
     """
     Fetches nearby amenities using Overpass with mirror fallbacks,
     Nominatim fallback, and caching.
@@ -197,7 +197,7 @@ def get_nearby_places(latitude: float, longitude: float, radius: int = 3000, loc
         "police_stations": []
     }
 
-    # Query nodes & ways with center within radius (3km is fast and accurate)
+    # Query nodes & ways with center within radius (5km search radius)
     query = f"""
     [out:json][timeout:10];
     (
@@ -347,7 +347,7 @@ def get_locations():
 def get_nearby_places_endpoint(
     latitude: float = Query(..., description="Latitude of property"),
     longitude: float = Query(..., description="Longitude of property"),
-    radius: int = Query(3000, description="Search radius in meters"),
+    radius: int = Query(5000, description="Search radius in meters"),
     location: Optional[str] = Query(None, description="Location name for fallback search")
 ):
     """
@@ -392,5 +392,5 @@ def prediction(data: HouseData):
         "predicted_prices": future_prices,
         "location": matched_loc,
         "coordinates": coordinates,
-        "search_radius_km": 3
+        "search_radius_km": 5
     }

@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import PredictPage from './pages/PredictPage';
-import AnalyticsPage from './pages/AnalyticsPage';
+
 import MethodologyPage from './pages/MethodologyPage';
 import ContactPage from './pages/ContactPage';
 import { usePredict } from './hooks/usePredict';
@@ -31,7 +31,7 @@ export default function App() {
               />
             }
           />
-          <Route path="/analytics" element={<AnalyticsPage />} />
+
           <Route path="/methodology" element={<MethodologyPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

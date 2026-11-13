@@ -25,7 +25,7 @@ export async function predictHouse(payload) {
   return data;
 }
 
-export async function fetchNearbyPlaces({ latitude, longitude, location, radius = 3000 }) {
+export async function fetchNearbyPlaces({ latitude, longitude, location, radius = 5000 }) {
   const params = new URLSearchParams({
     latitude: latitude.toString(),
     longitude: longitude.toString(),

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { IconTile } from './Design';
 function formatPrice(price) {
   if (price >= 100) {
     return `₹${(price / 100).toFixed(2)} Cr`;
@@ -6,6 +8,7 @@ function formatPrice(price) {
 }
 
 export default function PriceProjection({ prices }) {
+  const [view, setView] = useState('chart');
   const entries = Object.entries(prices);
   const values = entries.map(([, v]) => v);
   const maxVal = Math.max(...values);
@@ -13,14 +16,16 @@ export default function PriceProjection({ prices }) {
   return (
     <div className="card-level-1 projection-card">
       <div className="section-header-block">
-        <div>
-          <h3 className="section-title-main">5-Year Price Growth Trend</h3>
-          <p className="section-subtitle-main">Estimated annual value appreciation based on Bangalore market growth</p>
+        <div className="projection-title"><IconTile name="chart" /><div>
+          <h3 className="section-title-main">Price Trend</h3>
+          <p className="section-subtitle-main">Explore the growth projections for your property estimate.</p>
+        </div></div>
+        <div className="view-tabs" role="tablist" aria-label="Price trend view">
+          {['chart', 'table'].map(mode => <button key={mode} type="button" role="tab" aria-selected={view === mode} aria-controls={`price-${mode}`} id={`tab-${mode}`} onClick={() => setView(mode)}>{mode === 'chart' ? 'Chart' : 'Table'}</button>)}
         </div>
-        <span className="label-md">2022 &ndash; 2026</span>
       </div>
 
-      <div className="projection-chart-container">
+      <div role="tabpanel" id="price-chart" aria-labelledby="tab-chart" hidden={view !== 'chart'}><div className="projection-chart-container">
         {entries.map(([year, price]) => {
           const pct = Math.round((price / maxVal) * 100);
           const isTarget = year === '2026';
@@ -39,7 +44,8 @@ export default function PriceProjection({ prices }) {
         })}
       </div>
 
-      <table className="data-table">
+      </div>
+      <div className="table-scroll" role="tabpanel" id="price-table" aria-labelledby="tab-table" hidden={view !== 'table'}><table className="data-table">
         <thead>
           <tr>
             <th>Year</th>
@@ -73,7 +79,7 @@ export default function PriceProjection({ prices }) {
             );
           })}
         </tbody>
-      </table>
+      </table></div>
     </div>
   );
 }

@@ -1,170 +1,39 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { HouseArt, Icon } from '../components/Design';
+import './MethodologyPage.css';
+
+function PropertyPreview() {
+  return <div className="process-property-preview" aria-hidden="true">{['pin', 'home', 'sofa'].map((icon, index) => <div key={icon}><Icon name={icon} /><span style={{ width: `${[95, 75, 100][index]}%` }} /></div>)}</div>;
+}
+
+function ProjectionPreview() {
+  return <div className="process-projection-preview" aria-hidden="true"><span className="projection-preview-label">Growth projections</span><svg viewBox="0 0 180 90" fill="none"><defs><linearGradient id="process-chart-wash" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#0868f9" stopOpacity=".2" /><stop offset="1" stopColor="#0868f9" stopOpacity="0" /></linearGradient></defs><path d="M10 76C27 66 31 58 48 61S72 52 88 51 111 40 128 35 148 24 170 12V87H10Z" fill="url(#process-chart-wash)" /><path d="M10 76C27 66 31 58 48 61S72 52 88 51 111 40 128 35 148 24 170 12" stroke="#0868f9" strokeWidth="2" />{[[10,76],[48,61],[88,51],[128,35],[170,12]].map(([x,y]) => <circle key={x} cx={x} cy={y} r="3" fill="white" stroke="#0868f9" strokeWidth="1.5" />)}</svg></div>;
+}
+
+function NeighbourhoodPreview() {
+  return <div className="process-map-preview" aria-hidden="true"><svg className="process-map-streets" viewBox="0 0 200 120" fill="none"><path d="m-10 20 220 67M-10 76 210 25M25-10l51 150M171-10 94 140M-10 105l220-2M-10 48h220" stroke="white" strokeWidth="8" /></svg><span className="map-home"><Icon name="home" /></span><span className="map-school"><Icon name="school" /></span><span className="map-hospital"><Icon name="heart" /></span><span className="map-shopping"><Icon name="bag" /></span><span className="map-safety"><Icon name="shield" /></span></div>;
+}
+
+const steps = [
+  { icon: 'key', title: 'Tell Us About the Property', description: 'Enter the location, area, BHK and other basic details.', Preview: PropertyPreview },
+  { icon: 'layers', title: 'We Estimate the Price', description: 'A model trained on housing data calculates a property estimate and shows future price projections.', Preview: ProjectionPreview },
+  { icon: 'pin', title: 'Explore the Neighbourhood', description: 'See places like schools, hospitals, shopping areas and police stations near the property.', Preview: NeighbourhoodPreview },
+];
 
 export default function MethodologyPage() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, []);
 
-  return (
-    <div className="page-container">
-      <div className="page-header">
-        <div className="header-badge-row">
-          <span className="label-badge">Valuation Guide</span>
-          <span className="status-pill-live">Market Methodology</span>
-        </div>
-        <h1 className="page-title">How Our Valuation Works</h1>
-        <p className="page-subtitle">
-          Learn how HousePrice estimates property values across Bangalore, what factors influence pricing, and how neighborhood infrastructure is evaluated.
-        </p>
-      </div>
+  return <div className="how-page">
+    <section className="how-introduction" aria-labelledby="how-heading">
+      <span className="how-eyebrow">How It Works</span>
+      <h1 id="how-heading">A Simple Process<br />from Details to<br /><span>Property Insights</span></h1>
+      <p>Enter a few details about a property and get an estimated price along with information about the surrounding area.</p>
+      <div className="how-illustration" aria-hidden="true"><div className="how-art-backdrop" /><HouseArt variant="process" /><div className="how-amenities-note">{[['school','Schools'],['heart','Hospitals'],['bag','Shopping'],['shield','Police']].map(([icon,label]) => <span key={icon}><Icon name={icon} />{label}</span>)}</div><div className="how-model-note"><Icon name="chart" /><span>Property<br /><strong>Insights</strong></span></div></div>
+    </section>
 
-      <div className="methodology-grid">
-        <div className="card-level-1 methodology-card">
-          <div className="card-header-bar">
-            <div>
-              <span className="label-badge">Factor 1</span>
-              <h2 className="card-header-title">Neighborhood &amp; Locality</h2>
-            </div>
-            <span className="meta-pill">240+ Zones</span>
-          </div>
-
-          <p className="methodology-text">
-            Location is the single biggest factor in real estate pricing. Central areas like Indiranagar command premium rates, while emerging zones like North Bangalore offer affordable entry points with high appreciation potential.
-          </p>
-
-          <ul className="methodology-list">
-            <li>
-              <strong>Verified Price Baselines:</strong> Evaluates historical residential sales across 240+ Bangalore sub-markets.
-            </li>
-            <li>
-              <strong>Localized Demand:</strong> Accounts for tech corridor proximity, public transport access, and commercial vitality.
-            </li>
-          </ul>
-        </div>
-
-        <div className="card-level-1 methodology-card">
-          <div className="card-header-bar">
-            <div>
-              <span className="label-badge">Factor 2</span>
-              <h2 className="card-header-title">Area &amp; Configuration</h2>
-            </div>
-            <span className="meta-pill">Built-up Dimensions</span>
-          </div>
-
-          <p className="methodology-text">
-            Total super built-up square footage forms the base value of any apartment or house. Structural layout attributes further refine the estimate:
-          </p>
-
-          <ul className="methodology-list">
-            <li>
-              <strong>Square Footage (sq.ft):</strong> Direct baseline price calculation based on verified average rates per square foot.
-            </li>
-            <li>
-              <strong>BHK Configuration:</strong> Bedroom count defines space utility and matches typical household demand.
-            </li>
-            <li>
-              <strong>Bathrooms &amp; Balconies:</strong> Extra bathrooms and balcony spaces provide enhanced convenience and contribute to final market valuation.
-            </li>
-          </ul>
-        </div>
-
-        <div className="card-level-1 methodology-card">
-          <div className="card-header-bar">
-            <div>
-              <span className="label-badge">Factor 3</span>
-              <h2 className="card-header-title">Annual Market Growth</h2>
-            </div>
-            <span className="meta-pill">8.5% Benchmark</span>
-          </div>
-
-          <p className="methodology-text">
-            Bangalore&apos;s residential real estate has shown strong long-term resilience driven by IT employment and infrastructure expansion:
-          </p>
-
-          <ul className="methodology-list">
-            <li>
-              <strong>Compound Growth Index:</strong> We calibrate valuations using an 8.5% average annual compounding growth trajectory.
-            </li>
-            <li>
-              <strong>Multi-Year Horizon:</strong> Displays estimates through 2026 so buyers and sellers can visualize equity growth and capital appreciation.
-            </li>
-          </ul>
-        </div>
-
-        <div className="card-level-1 methodology-card">
-          <div className="card-header-bar">
-            <div>
-              <span className="label-badge">Factor 4</span>
-              <h2 className="card-header-title">Surrounding Facilities</h2>
-            </div>
-            <span className="meta-pill">3 KM Scan</span>
-          </div>
-
-          <p className="methodology-text">
-            A property&apos;s livability and rental demand depend heavily on day-to-day civic conveniences within quick driving distance:
-          </p>
-
-          <div className="spatial-steps-row">
-            <div className="spatial-step-col">
-              <h4>🏫 Education</h4>
-              <p>Top schools and colleges within 3 km for family convenience.</p>
-            </div>
-            <div className="spatial-step-col">
-              <h4>🏥 Healthcare</h4>
-              <p>Hospitals, clinics, and emergency medical centers.</p>
-            </div>
-            <div className="spatial-step-col">
-              <h4>🛍️ Retail &amp; Safety</h4>
-              <p>Shopping malls, supermarkets, and local police stations.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-level-1 methodology-card full-width-card">
-          <div className="card-header-bar">
-            <div>
-              <span className="label-badge">Buyer &amp; Seller Guide</span>
-              <h2 className="card-header-title">Additional Factors That Influence Final Price</h2>
-            </div>
-            <span className="meta-pill">Important Advice</span>
-          </div>
-
-          <p className="methodology-text">
-            While our valuation provides an accurate market benchmark, real-world closing transactions can vary based on individual property conditions:
-          </p>
-
-          <div className="workflow-steps-grid" style={{ marginTop: 8 }}>
-            <div className="workflow-step-card">
-              <h4 className="step-title">Floor Rise &amp; Facing</h4>
-              <p className="step-desc">
-                Higher floors, corner units, and park/lake-facing apartments typically command a 5% to 15% premium.
-              </p>
-            </div>
-            <div className="workflow-step-card">
-              <h4 className="step-title">Builder Reputation</h4>
-              <p className="step-desc">
-                Tier-1 developers (e.g. Prestige, Brigade, Sobha) usually trade at higher rates due to construction quality and amenities.
-              </p>
-            </div>
-            <div className="workflow-step-card">
-              <h4 className="step-title">Interior Furnishing</h4>
-              <p className="step-desc">
-                Semi-furnished or fully furnished homes with modular kitchens and wardrobes fetch higher rental and resale prices.
-              </p>
-            </div>
-          </div>
-
-          <div className="disclaimer-actions" style={{ marginTop: 24 }}>
-            <Link to="/predict" className="btn-primary-action">
-              Calculate Your Property Price &rarr;
-            </Link>
-            <Link to="/analytics" className="btn-secondary-action">
-              Browse Bangalore Localities
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    <section className="how-timeline" aria-label="Property prediction process">
+      <ol>{steps.map(({ icon, title, description, Preview }, index) => <li className={`how-step how-step-${index + 1}`} key={title}><span className="how-timeline-icon"><Icon name={icon} /></span><article className="how-step-card"><div className="how-step-copy"><h2>{index + 1}. {title}</h2><p>{description}</p></div><Preview /></article></li>)}</ol>
+      <div className="how-results"><span className="how-timeline-icon how-complete"><Icon name="check" /></span><div className="how-results-card"><span className="how-results-icon"><Icon name="chart" /></span><div><h2>Get Your Results</h2><p>A property estimate with growth projections and nearby facilities — all in one place.</p></div></div></div>
+    </section>
+  </div>;
 }

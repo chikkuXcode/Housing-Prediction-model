@@ -1,3 +1,4 @@
+import { Icon } from './Design';
 const FACILITY_CONFIG = {
   hospitals: {
     label: 'Hospitals & Healthcare',
@@ -25,10 +26,10 @@ export default function FacilityCard({ type, places }) {
   const config = FACILITY_CONFIG[type] || { label: type, code: 'FAC', icon: '📍' };
 
   return (
-    <div className="facility-card-mod">
+    <div className={`facility-card-mod facility-${type}`}>
       <div className="facility-card-header">
         <div className="facility-title-group">
-          <div className="facility-category-badge">{config.icon}</div>
+          <div className="facility-category-badge"><Icon name={({ hospitals: 'heart', schools: 'school', malls: 'bag', police_stations: 'shield' })[type] || 'pin'} /></div>
           <div>
             <h4 className="facility-title-text">{config.label}</h4>
             <span className="facility-count-tag">Top Nearby Places</span>

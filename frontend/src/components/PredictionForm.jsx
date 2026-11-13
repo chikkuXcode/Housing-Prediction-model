@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { IconTile } from './Design';
 import { useLocations } from '../hooks/usePredict';
 
 const SELECT_OPTIONS = {
@@ -63,11 +64,10 @@ export default function PredictionForm({ onPredict, loading }) {
   return (
     <div className="card-level-1 form-card">
       <div className="card-header-bar">
-        <div className="card-header-left">
-          <h2 className="card-header-title">Enter House Details</h2>
-          <p className="card-header-subtitle">Provide property details like area, bedrooms, and location to predict the price</p>
+        <div className="card-header-left"><IconTile name="home" /><div>
+          <h2 className="card-header-title">Enter Property Details</h2>
+          <p className="card-header-subtitle">Fill in the property details to estimate its value.</p></div>
         </div>
-        <span className="label-md">Input Form</span>
       </div>
 
       <form onSubmit={handleSubmit}>

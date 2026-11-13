@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Icon } from './Design';
 import { NavLink, Link } from 'react-router-dom';
 
 export default function Navbar() {
@@ -10,9 +11,8 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand" onClick={closeMobile}>
-          <div className="navbar-logo-mark">HP</div>
-          <span className="navbar-title">HousePrice</span>
-          <span className="navbar-tag">Bengaluru</span>
+          <div className="navbar-logo-mark"><Icon name="home" /></div>
+          <span className="brand-copy"><span className="navbar-title">RealEstate</span><span className="brand-subtitle">Price Prediction with Neighbourhood Analytics</span></span>
         </Link>
 
         <nav className="navbar-nav">
@@ -30,12 +30,6 @@ export default function Navbar() {
             Predict Price
           </NavLink>
           <NavLink
-            to="/analytics"
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          >
-            Localities &amp; Trends
-          </NavLink>
-          <NavLink
             to="/methodology"
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
           >
@@ -50,16 +44,14 @@ export default function Navbar() {
         </nav>
 
         <div className="navbar-meta">
-          <div className="status-indicator">
-            <span className="status-dot"></span>
-            <span className="status-text">2026 Market Index</span>
-          </div>
 
           <button
             type="button"
             className="mobile-toggle-btn"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             <span className={`hamburger-bar ${mobileMenuOpen ? 'open' : ''}`}></span>
           </button>
@@ -67,7 +59,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="mobile-nav-menu">
+        <div className="mobile-nav-menu" id="mobile-navigation">
           <NavLink
             to="/"
             end
@@ -82,13 +74,6 @@ export default function Navbar() {
             className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
           >
             Predict Price
-          </NavLink>
-          <NavLink
-            to="/analytics"
-            onClick={closeMobile}
-            className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
-          >
-            Localities &amp; Trends
           </NavLink>
           <NavLink
             to="/methodology"
